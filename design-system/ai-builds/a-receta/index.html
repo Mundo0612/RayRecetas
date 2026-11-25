@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fideo · Recetas de Familia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,600,0..100,0..1&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* ---- Figma variables (01 · Foundations), code-syntax names ---- */
+  --color-action-primary: #b4532f;
+  --color-action-primary-hover: #8a3b1e;
+  --color-action-primary-pressed: #6f2f17;
+  --color-action-on-primary: #fffbf3;
+  --color-action-secondary: #2f4b3a;
+  --color-action-secondary-hover: #e2eadc;
+  --color-action-secondary-pressed: #cbd9c3;
+  --color-action-disabled: #f3e5cc;
+  --color-action-on-disabled: #6a5345;
+  --color-surface-page: #fbf4e6;
+  --color-surface-card: #fffbf3;
+  --color-surface-sunken: #f3e5cc;
+  --color-surface-her-words: #fbf0c9;
+  --color-surface-placeholder: #f4dccd;
+  --color-text-primary: #2f221b;
+  --color-text-secondary: #6a5345;
+  --color-text-accent: #8a3b1e;
+  --color-text-quote-mark: #b4532f;
+  --color-border-default: #e6d4b8;
+  --color-border-focus: #2f4b3a;
+  --color-feedback-success: #2f4b3a;
+  --color-feedback-success-surface: #e2eadc;
+  --color-feedback-warning: #8a3b1e;
+  --color-feedback-warning-surface: #fbf0c9;
+  --color-feedback-warning-rule: #f1cf72;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  --radius-chip: 12px;
+  --radius-card: 24px;
+  --radius-sheet: 28px;
+  --radius-full: 999px;
+
+  --size-tap: 44px;
+  --size-button: 56px;
+  --border-width-control: 2px;
+
+  /* ---- Figma text styles (as font shorthands) ---- */
+  --font-serif: "Fraunces", Georgia, serif;
+  --font-sans: "Nunito Sans", system-ui, sans-serif;
+  --text-heading-display: 600 30px/1.15 var(--font-serif);
+  --text-body-default: 400 17px/1.55 var(--font-sans);
+  --text-body-strong: 700 17px/1.55 var(--font-sans);
+  --text-body-small: 400 15px/1.45 var(--font-sans);
+  --text-body-caption: 400 14px/1.4 var(--font-sans);
+  --text-label-field: 700 15px/1.3 var(--font-sans);
+  --text-label-button: 700 17px/1.2 var(--font-sans);
+  --text-label-section: 800 14px/1.3 var(--font-sans);
+  --tracking-label-section: 0.08em;
+
+  /* ---- Values used in the frame that have NO Figma variable ---- */
+  --local-page-max: 390px;
+  --local-hero-height: 200px;
+  --local-icon-hero: 56px;
+  --local-icon-nav: 24px;
+  --local-icon-feedback: 20px;
+  --local-bullet: 8px;
+  --local-hairline: 1px;
+  --local-feedback-rule: 4px;
+  --local-feedback-text-gap: 2px;
+  --local-focus-gap: 2px;
+  --local-focus-ring: 3px;
+  --local-shadow-toggle: 0 2px 6px 0 rgba(46, 33, 26, 0.15);
+}
+
+* { box-sizing: border-box; margin: 0; }
+html { background: var(--color-surface-page); }
+body {
+  background: var(--color-surface-page);
+  color: var(--color-text-primary);
+  font: var(--text-body-default);
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+
+/* Shared focus treatment: 3px border/focus ring with a 2px surface/page gap */
+.focusable:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 var(--local-focus-gap) var(--color-surface-page),
+    0 0 0 calc(var(--local-focus-gap) + var(--local-focus-ring)) var(--color-border-focus);
+}
+
+.screen {
+  max-width: var(--local-page-max);
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--color-surface-page);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  height: var(--local-hero-height);
+  background: var(--color-surface-placeholder);
+  overflow: hidden;
+}
+.hero__pot {
+  position: absolute;
+  top: calc(var(--space-12) + var(--space-3));
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--color-action-primary);
+}
+.topbar {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  right: var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.icon-btn {
+  width: var(--size-tap);
+  height: var(--size-tap);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-card);
+  color: var(--color-text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color .15s;
+}
+.icon-btn:hover { background: var(--color-surface-sunken); }
+.icon-btn:active { background: var(--color-border-default); }
+
+/* ---------- Language toggle ---------- */
+.lang {
+  display: flex;
+  padding: var(--space-1);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-full);
+}
+.lang__opt {
+  width: var(--size-tap);
+  height: var(--size-tap);
+  border-radius: var(--radius-full);
+  font: var(--text-label-field);
+  color: var(--color-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color .15s, color .15s;
+}
+.lang__opt:hover { color: var(--color-text-primary); }
+.lang__opt[aria-pressed="true"] {
+  background: var(--color-surface-card);
+  color: var(--color-text-accent);
+  box-shadow: var(--local-shadow-toggle);
+}
+.lang__opt[aria-pressed="true"]:focus-visible {
+  box-shadow:
+    var(--local-shadow-toggle),
+    0 0 0 var(--local-focus-gap) var(--color-surface-page),
+    0 0 0 calc(var(--local-focus-gap) + var(--local-focus-ring)) var(--color-border-focus);
+}
+
+/* ---------- Body ---------- */
+.body {
+  background: var(--color-surface-page);
+  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+  padding: var(--space-6) var(--space-5) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  flex: 1;
+}
+.title { display: flex; flex-direction: column; gap: var(--space-1); }
+.title h1 {
+  font: var(--text-heading-display);
+  font-variation-settings: "SOFT" 0, "WONK" 1;
+  color: var(--color-text-primary);
+}
+.title p { font: var(--text-body-strong); color: var(--color-text-accent); }
+
+.her-words {
+  background: var(--color-surface-her-words);
+  border-radius: var(--radius-card);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.her-words blockquote { font: var(--text-body-default); color: var(--color-text-primary); }
+.q { color: var(--color-text-quote-mark); }
+.her-words figcaption { font: var(--text-body-caption); color: var(--color-text-secondary); }
+
+.shared { display: flex; flex-direction: column; gap: var(--space-2); }
+.shared h2 { font: var(--text-label-field); color: var(--color-text-secondary); }
+.chips { display: flex; gap: var(--space-2); list-style: none; padding: 0; }
+.chip {
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-full);
+  padding: var(--space-1) var(--space-3);
+  font: var(--text-label-field);
+  color: var(--color-text-primary);
+}
+
+.section { display: flex; flex-direction: column; gap: var(--space-3); }
+.section-label {
+  font: var(--text-label-section);
+  letter-spacing: var(--tracking-label-section);
+  text-transform: uppercase;
+  color: var(--color-text-accent);
+}
+.card {
+  background: var(--color-surface-card);
+  border: var(--local-hairline) solid var(--color-border-default);
+  border-radius: var(--radius-card);
+  padding: var(--space-1) var(--space-4);
+}
+.ingredients { list-style: none; padding: 0; }
+.ingredient {
+  padding: var(--space-3) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.ingredient + .ingredient { border-top: var(--local-hairline) solid var(--color-border-default); }
+.ingredient__line { display: flex; align-items: center; gap: var(--space-3); }
+.ingredient__line svg { flex: none; color: var(--color-action-primary); }
+.ingredient__line span { flex: 1; font: var(--text-body-default); }
+
+.meta { font: var(--text-body-small); color: var(--color-text-secondary); }
+
+/* ---------- Feedback message ---------- */
+.feedback {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-chip);
+  border-left: var(--local-feedback-rule) solid;
+  color: var(--color-text-primary);
+}
+.feedback svg { flex: none; }
+.feedback__text { display: flex; flex-direction: column; gap: var(--local-feedback-text-gap); flex: 1; min-width: 0; }
+.feedback__lead { font: var(--text-label-field); }
+.feedback__next { font: var(--text-body-small); }
+.feedback--warning { background: var(--color-feedback-warning-surface); border-left-color: var(--color-feedback-warning-rule); }
+.feedback--warning svg { color: var(--color-feedback-warning); }
+.feedback--success { background: var(--color-feedback-success-surface); border-left-color: var(--color-feedback-success); }
+.feedback--success svg { color: var(--color-feedback-success); }
+.feedback-slot:empty { display: none; }
+
+/* ---------- Button ---------- */
+.btn {
+  width: 100%;
+  min-width: var(--size-tap);
+  height: var(--size-button);
+  padding: 0 var(--space-6);
+  border-radius: var(--radius-card);
+  font: var(--text-label-button);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color .15s, color .15s;
+}
+.btn--primary { background: var(--color-action-primary); color: var(--color-action-on-primary); }
+.btn--primary:hover { background: var(--color-action-primary-hover); }
+.btn--primary:active { background: var(--color-action-primary-pressed); }
+.btn--secondary {
+  background: var(--color-surface-card);
+  color: var(--color-action-secondary);
+  border: var(--border-width-control) solid var(--color-action-secondary);
+}
+.btn--secondary:hover { background: var(--color-action-secondary-hover); }
+.btn--secondary:active { background: var(--color-action-secondary-pressed); }
+.btn:disabled,
+.btn:disabled:hover,
+.btn:disabled:active {
+  background: var(--color-action-disabled);
+  color: var(--color-action-on-disabled);
+  cursor: not-allowed;
+}
+.btn--secondary:disabled { border-color: var(--color-border-default); }
+.action-group { display: flex; flex-direction: column; gap: var(--space-3); }
+
+/* ---------- Footer ---------- */
+.footer {
+  position: sticky;
+  bottom: 0;
+  background: var(--color-surface-page);
+  border-top: var(--local-hairline) solid var(--color-border-default);
+  padding: var(--space-3) var(--space-5) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+</style>
+</head>
+<body>
+<div class="screen">
+  <header class="hero">
+    <svg class="hero__pot" width="56" height="56" viewBox="0 0 56 56" fill="none" aria-hidden="true"><path d="M7 23.3333H49M11.6667 23.3333V39.6667C11.6667 41.5232 12.4042 43.3037 13.7169 44.6164C15.0297 45.9292 16.8102 46.6667 18.6667 46.6667H37.3333C39.1898 46.6667 40.9703 45.9292 42.2831 44.6164C43.5958 43.3037 44.3333 41.5232 44.3333 39.6667V23.3333M3.5 28H7M49 28H52.5M21 15.1667C21 12.8333 23.3333 11.6667 23.3333 9.33333M30.3333 15.1667C30.3333 12.8333 32.6667 11.6667 32.6667 9.33333" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="topbar">
+      <button class="icon-btn focusable" type="button" data-i18n-label="back" aria-label="Regresar" onclick="history.length > 1 && history.back()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5L8 12L15 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="lang" role="group" data-i18n-label="language" aria-label="Idioma">
+        <button class="lang__opt focusable" type="button" data-lang="es" aria-pressed="true" lang="es">ES</button>
+        <button class="lang__opt focusable" type="button" data-lang="en" aria-pressed="false" lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="body">
+    <div class="title">
+      <h1>Fideo</h1>
+      <p data-i18n="from">De Mamá Lupe</p>
+    </div>
+
+    <!-- Her words: never translated -->
+    <figure class="her-words" lang="es">
+      <blockquote><span class="q">“</span>Este es el fideo que les hacía cuando llegaban de la escuela. Nada complicado, mija, nomás no lo dejes solo.<span class="q">”</span></blockquote>
+      <figcaption>— Mamá Lupe</figcaption>
+    </figure>
+
+    <section class="shared">
+      <h2 data-i18n="sharedWith">Compartida con</h2>
+      <ul class="chips">
+        <li class="chip">Dani</li>
+        <li class="chip">Marcos</li>
+        <li class="chip">Sofi</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2 class="section-label" data-i18n="ingredients">Ingredientes</h2>
+      <div class="card">
+        <ul class="ingredients" lang="es">
+          <li class="ingredient"><div class="ingredient__line"><svg width="8" height="8" viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg><span>un paquetito de fideo, el delgadito</span></div></li>
+          <li class="ingredient"><div class="ingredient__line"><svg width="8" height="8" viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg><span>un chorrito de aceite</span></div></li>
+          <li class="ingredient"><div class="ingredient__line"><svg width="8" height="8" viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg><span>dos tomates bien maduros</span></div></li>
+          <li class="ingredient"><div class="ingredient__line"><svg width="8" height="8" viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg><span>un pedacito de cebolla</span></div></li>
+          <li class="ingredient"><div class="ingredient__line"><svg width="8" height="8" viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg><span>un diente de ajo, o dos si están chiquitos</span></div></li>
+          <li class="ingredient"><div class="ingredient__line"><svg width="8" height="8" viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg><span>un puñito de comino</span></div></li>
+          <li class="ingredient"><div class="ingredient__line"><svg width="8" height="8" viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg><span>consomé de pollo, una cucharada o al gusto</span></div></li>
+          <li class="ingredient">
+            <div class="ingredient__line"><svg width="8" height="8" viewBox="0 0 8 8" aria-hidden="true"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg><span>agua, lo que agarre la olla</span></div>
+            <div class="feedback feedback--warning" role="note" lang="es" data-feedback="unsureAmount"></div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <p class="meta" data-i18n="steps">6 pasos, uno por pantalla</p>
+
+    <div class="action-group">
+      <button class="btn btn--secondary focusable" type="button" id="review-btn" data-i18n="review" aria-describedby="review-feedback">Revisar (para Mamá Lupe)</button>
+      <div class="feedback-slot" id="review-feedback" role="status" aria-live="polite"></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="feedback-slot" id="cook-feedback" role="status" aria-live="polite"></div>
+    <button class="btn btn--primary focusable" type="button" id="cook-btn" data-i18n="cook">Cocinar ahora</button>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var ICONS = {
+    warning: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 8.33333V12.0833M10 14.3333V14.5833M10 2.91667L2.08333 16.6667H17.9167L10 2.91667Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    success: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M6.66667 10.4167L9 12.75L13.75 7.91667M10 17.5C10.9849 17.5 11.9602 17.306 12.8701 16.9291C13.7801 16.5522 14.6069 15.9997 15.3033 15.3033C15.9997 14.6069 16.5522 13.7801 16.9291 12.8701C17.306 11.9602 17.5 10.9849 17.5 10C17.5 9.01509 17.306 8.03982 16.9291 7.12987C16.5522 6.21993 15.9997 5.39314 15.3033 4.6967C14.6069 4.00026 13.7801 3.44781 12.8701 3.0709C11.9602 2.69399 10.9849 2.5 10 2.5C8.01088 2.5 6.10322 3.29018 4.6967 4.6967C3.29018 6.10322 2.5 8.01088 2.5 10C2.5 11.9891 3.29018 13.8968 4.6967 15.3033C6.10322 16.7098 8.01088 17.5 10 17.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+  };
+
+  // Interface labels only. Her words (quote, ingredients, dish name, attribution) are never translated.
+  var STRINGS = {
+    es: {
+      back: 'Regresar', language: 'Idioma',
+      from: 'De Mamá Lupe', sharedWith: 'Compartida con', ingredients: 'Ingredientes',
+      steps: '6 pasos, uno por pantalla',
+      review: 'Revisar (para Mamá Lupe)', reviewSent: 'Ya le avisamos a Mamá Lupe',
+      cook: 'Cocinar ahora',
+      unsureAmount: ['No estoy seguro de la cantidad.', 'Pregúntele a Mamá Lupe.'],
+      reviewDone: ['Le avisamos a Mamá Lupe.', 'Ella revisa la receta cuando pueda.'],
+      cookReady: ['Listo para cocinar.', 'Vamos paso por paso, uno por pantalla.']
+    },
+    en: {
+      back: 'Go back', language: 'Language',
+      from: 'From Mamá Lupe', sharedWith: 'Shared with', ingredients: 'Ingredients',
+      steps: '6 steps, one per screen',
+      review: 'Review (for Mamá Lupe)', reviewSent: 'Mamá Lupe already knows',
+      cook: 'Cook now',
+      unsureAmount: ["I'm not sure about the amount.", 'Ask Mamá Lupe.'],
+      reviewDone: ['We let Mamá Lupe know.', 'She will review the recipe when she can.'],
+      cookReady: ['Ready to cook.', "We'll go step by step, one per screen."]
+    }
+  };
+
+  var lang = 'es';
+  var state = { reviewed: false, cooking: false };
+
+  function feedbackHTML(type, key) {
+    var s = STRINGS[lang][key];
+    return ICONS[type] +
+      '<div class="feedback__text"><p class="feedback__lead">' + s[0] + '</p>' +
+      '<p class="feedback__next">' + s[1] + '</p></div>';
+  }
+
+  function renderFeedback(slot, type, key) {
+    slot.innerHTML = '<div class="feedback feedback--' + type + '" lang="' + lang + '">' + feedbackHTML(type, key) + '</div>';
+  }
+
+  function render() {
+    var t = STRINGS[lang];
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(function (el) { el.textContent = t[el.dataset.i18n]; });
+    document.querySelectorAll('[data-i18n-label]').forEach(function (el) { el.setAttribute('aria-label', t[el.dataset.i18nLabel]); });
+    document.querySelectorAll('.lang__opt').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.lang === lang)); });
+
+    var warn = document.querySelector('[data-feedback="unsureAmount"]');
+    warn.setAttribute('lang', lang);
+    warn.innerHTML = feedbackHTML('warning', 'unsureAmount');
+
+    var reviewBtn = document.getElementById('review-btn');
+    if (state.reviewed) {
+      reviewBtn.disabled = true;
+      reviewBtn.textContent = t.reviewSent;
+      renderFeedback(document.getElementById('review-feedback'), 'success', 'reviewDone');
+    }
+    if (state.cooking) renderFeedback(document.getElementById('cook-feedback'), 'success', 'cookReady');
+  }
+
+  document.querySelectorAll('.lang__opt').forEach(function (b) {
+    b.addEventListener('click', function () { lang = b.dataset.lang; render(); });
+  });
+  document.getElementById('review-btn').addEventListener('click', function () { state.reviewed = true; render(); });
+  document.getElementById('cook-btn').addEventListener('click', function () { state.cooking = true; render(); });
+
+  render();
+})();
+</script>
+</body>
+</html>

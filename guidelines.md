@@ -1,0 +1,20 @@
+# Recetas de Familia · guidelines.md (v2)
+
+Figma: https://www.figma.com/design/Aiqcg9sqDb4rMyV9LqfziA (pages 01–03 are the source of truth)
+
+## Product
+A family cookbook where mom, tía, or abuela records her everyday dishes by talking while she cooks. Her grown kids cook from it at home. It should feel like mom's kitchen: warm, calm, unhurried. Not a recipe website.
+
+## Rules (follow all of them)
+1. Use only the Figma variables. Colors are semantic: `action/*`, `surface/*`, `text/*`, `border/*`, `feedback/*` (CSS: `var(--color-action-primary)` etc.). Never use a primitive (`terracotta/500`) or a raw hex in a screen. Icons take the color of the text next to them, or `action/primary` when decorative.
+2. Spacing: `space/N` = N × 4px, and only these exist: 1, 2, 3, 4, 5, 6, 8, 10, 12. Screen side padding is `space/5`; gaps between sections are `space/6`. Radii: `radius/box` 6, `radius/chip` 12, `radius/card` 24, `radius/sheet` 28, `radius/full`. Sizes: `size/icon` 24, `size/icon-sm` 20, `size/checkbox` 24, `size/tap` 44, `size/button` 56, `size/field` 52.
+3. Type: Fraunces only for `heading/display` and `heading/title` (dish names, screen titles, recipe group headers). Everything else is Nunito Sans using the text styles (`body/*`, `label/*`). `label/section` letter spacing is 8% (0.08em). Cook-mode steps use `body/step` (26px).
+4. Every tappable thing is at least 44 × 44 (`size/tap`). Buttons are 56 tall (`size/button`) and full width on mobile.
+5. Use the `Button` component. One Primary per screen, for the action the screen most wants, and it lives in a sticky footer (`surface/page`, `border/default` top line). Everything else is Secondary. Focus is a 3px `border/focus` ring, `size/focus-offset` (2px) away, on every interactive element. Disabled always comes with a written reason.
+6. Her words are sacred. Never translate, correct, or rewrite the recipe holder's words, even in English mode. That includes dish names and people's names (Fideo, Mamá Lupe). Only interface labels switch with the ES/EN `Language toggle`, which appears on every screen (Spanish by default). Curly quotes (`text/quote-mark`) wrap her words only when they stand alone as a quote: the intro on `surface/her-words`, cook steps, and the "based on" line. In lists (ingredients, shopping list) her words appear plain, with a bullet or Checkbox, no quote marks.
+7. AI moments use the `Suggestion` component only: labelled SUGERENCIA, says what it's based on ("según lo que dijo: “un puñito”"), offers Aplicar and Descartar as Secondary buttons, and keeps Deshacer after either. Nothing changes until someone taps. Show at most 2 open Suggestions on a screen. Others wait behind one Secondary button "Ver N sugerencias más". Her words must stay the most visible thing on the screen.
+8. If the app isn't sure, it says so with `Feedback message / Warning` ("No estoy seguro de la cantidad. Pregúntele a Mamá Lupe.") instead of guessing a number. "Al gusto" (salt, chile) is not uncertain: it's her instruction, so show no warning.
+9. Feedback never relies on color alone: icon + short lead phrase ending in a period + one plain next step. Success = done, Warning = unsure, Error = something's missing and how to fix it.
+10. Voice: calm, warm, usted with mom, short sentences. Never scold or alarm ("¡Error!", "Invalid input", red-only states). Mom always has the final word on her recipe. English copy is a translation of the Spanish interface copy, with the same calm tone.
+11. Layout is a single column, 390 wide, on `surface/page`. Content groups sit on `surface/card` cards with `border/default` and `radius/card`; rows inside a card are divided by a 1px `border/default` line. Section labels use `label/section` in `text/accent`.
+12. Lists the cook works through use the `Checkbox` component. Checked items never get strikethrough; add a status line in `label/chip` instead. Progress is a `heading/subtitle` count ("3 de 13") over an 8px bar: `surface/sunken` track, `action/secondary` fill, `radius/full`.

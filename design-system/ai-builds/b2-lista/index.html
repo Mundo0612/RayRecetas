@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lista del mandado · Recetas de Familia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Color (semantic) */
+  --color-action-primary: #b4532f;
+  --color-action-primary-hover: #8a3b1e;
+  --color-action-primary-pressed: #6f2f17;
+  --color-action-on-primary: #fffbf3;
+  --color-action-secondary: #2f4b3a;
+  --color-action-secondary-hover: #e2eadc;
+  --color-action-secondary-pressed: #cbd9c3;
+  --color-action-disabled: #f3e5cc;
+  --color-action-on-disabled: #6a5345;
+  --color-surface-page: #fbf4e6;
+  --color-surface-card: #fffbf3;
+  --color-surface-sunken: #f3e5cc;
+  --color-surface-suggestion: #f4dccd;
+  --color-text-primary: #2f221b;
+  --color-text-secondary: #6a5345;
+  --color-text-accent: #8a3b1e;
+  --color-text-quote-mark: #b4532f;
+  --color-border-default: #e6d4b8;
+  --color-border-input: #6a5345;
+  --color-border-focus: #2f4b3a;
+  --color-border-suggestion: #b4532f;
+  --color-feedback-success: #2f4b3a;
+  --color-feedback-success-surface: #e2eadc;
+  --color-feedback-warning: #8a3b1e;
+  --color-feedback-warning-surface: #fbf0c9;
+  --color-feedback-warning-rule: #f1cf72;
+  --color-feedback-error: #9a2a1a;
+  --color-feedback-error-surface: #f8dcd4;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Radius */
+  --radius-box: 6px;
+  --radius-chip: 12px;
+  --radius-card: 24px;
+  --radius-full: 999px;
+
+  /* Size */
+  --size-icon: 24px;
+  --size-icon-sm: 20px;
+  --size-checkbox: 24px;
+  --size-tap: 44px;
+  --size-button: 56px;
+  --size-focus-offset: 2px;
+
+  /* Border width */
+  --border-width-default: 1px;
+  --border-width-control: 2px;
+  --border-width-focus: 3px;
+  --border-width-rule: 4px;
+
+  /* Effect style */
+  --elevation-raised: 0 2px 6px 0 rgba(47, 34, 27, 0.15);
+
+  /* Text styles (Figma text styles, expressed as font shorthands) */
+  --font-family-heading: "Fraunces", Georgia, serif;
+  --font-family-body: "Nunito Sans", system-ui, sans-serif;
+  --heading-display: 600 30px/1.15 var(--font-family-heading);
+  --heading-title: 600 22px/1.25 var(--font-family-heading);
+  --heading-subtitle: 700 19px/1.3 var(--font-family-body);
+  --body-default: 400 17px/1.55 var(--font-family-body);
+  --body-strong: 700 17px/1.55 var(--font-family-body);
+  --body-small: 400 15px/1.45 var(--font-family-body);
+  --body-caption: 400 14px/1.4 var(--font-family-body);
+  --label-button: 700 17px/1.2 var(--font-family-body);
+  --label-field: 700 15px/1.3 var(--font-family-body);
+  --label-section: 800 14px/1.3 var(--font-family-body);
+  --label-section-tracking: 0.08em;
+  --label-chip: 800 13px/1.3 var(--font-family-body);
+  --label-chip-tracking: 0.06em;
+
+  /* Layout (not a Figma variable: page width from guidelines rule 11) */
+  --page-max-width: 390px;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--color-surface-page);
+  color: var(--color-text-primary);
+  font: var(--body-default);
+}
+button { font: inherit; color: inherit; margin: 0; }
+
+.page {
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface-page);
+}
+
+/* Focus ring: 3px border/focus, 2px surface/page gap */
+:focus { outline: none; }
+:focus-visible {
+  box-shadow:
+    0 0 0 var(--size-focus-offset) var(--color-surface-page),
+    0 0 0 calc(var(--size-focus-offset) + var(--border-width-focus)) var(--color-border-focus);
+}
+
+/* Top bar */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-3) 0;
+}
+.icon-button {
+  width: var(--size-tap);
+  height: var(--size-tap);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-card);
+  color: var(--color-text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+.icon-button svg { width: var(--size-icon); height: var(--size-icon); display: block; }
+
+/* Language toggle */
+.lang {
+  display: inline-flex;
+  padding: var(--space-1);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-full);
+}
+.lang button {
+  width: var(--size-tap);
+  height: var(--size-tap);
+  border: 0;
+  padding: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  font: var(--label-field);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+.lang button[aria-pressed="true"] {
+  background: var(--color-surface-card);
+  color: var(--color-text-accent);
+  box-shadow: var(--elevation-raised);
+}
+.lang button[aria-pressed="true"]:focus-visible {
+  box-shadow:
+    0 0 0 var(--size-focus-offset) var(--color-surface-page),
+    0 0 0 calc(var(--size-focus-offset) + var(--border-width-focus)) var(--color-border-focus);
+}
+
+/* Body */
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-5) var(--space-8);
+}
+.title { display: flex; flex-direction: column; gap: var(--space-1); }
+.title h1 {
+  margin: 0;
+  font: var(--heading-display);
+  font-variation-settings: "SOFT" 0, "WONK" 1;
+  color: var(--color-text-primary);
+}
+.title p { margin: 0; font: var(--body-strong); color: var(--color-text-accent); }
+
+.section-label {
+  margin: 0;
+  font: var(--label-section);
+  letter-spacing: var(--label-section-tracking);
+  text-transform: uppercase;
+  color: var(--color-text-accent);
+}
+
+/* Progress */
+.card {
+  background: var(--color-surface-card);
+  border: var(--border-width-default) solid var(--color-border-default);
+  border-radius: var(--radius-card);
+}
+.progress { padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
+.progress-line { display: flex; align-items: baseline; gap: var(--space-2); flex-wrap: wrap; }
+.progress-count { font: var(--heading-subtitle); color: var(--color-text-primary); margin: 0; }
+.progress-note { font: var(--body-small); color: var(--color-text-secondary); }
+.bar {
+  height: var(--space-2);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  width: 0;
+  background: var(--color-action-secondary);
+  border-radius: var(--radius-full);
+  transition: width 200ms ease;
+}
+
+/* Recipe groups */
+.group { display: flex; flex-direction: column; gap: var(--space-3); }
+.group-head { display: flex; flex-direction: column; gap: var(--space-1); }
+.group-head h2 {
+  margin: 0;
+  font: var(--heading-title);
+  font-variation-settings: "SOFT" 0, "WONK" 1;
+  color: var(--color-text-primary);
+}
+.group-head p { margin: 0; font: var(--body-caption); color: var(--color-text-secondary); }
+.list { list-style: none; margin: 0; padding: var(--space-1) var(--space-4); }
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
+  border-bottom: var(--border-width-default) solid var(--color-border-default);
+}
+.item:last-child { border-bottom: 0; }
+.line { display: flex; align-items: flex-start; gap: var(--space-2); }
+.line-text { flex: 1; min-width: 0; padding-top: var(--space-2); display: flex; flex-direction: column; gap: var(--space-1); }
+.her-words { margin: 0; font: var(--body-default); color: var(--color-text-primary); cursor: pointer; }
+.status {
+  margin: 0;
+  font: var(--label-chip);
+  letter-spacing: var(--label-chip-tracking);
+  text-transform: uppercase;
+  color: var(--color-action-secondary);
+}
+.status[hidden] { display: none; }
+
+/* Checkbox */
+.checkbox {
+  flex: none;
+  width: var(--size-tap);
+  height: var(--size-tap);
+  margin-left: calc(-1 * var(--space-2));
+  border: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: var(--radius-box);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.checkbox .box {
+  width: var(--size-checkbox);
+  height: var(--size-checkbox);
+  border-radius: var(--radius-box);
+  border: var(--border-width-control) solid var(--color-border-input);
+  background: var(--color-surface-card);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-action-on-primary);
+}
+.checkbox .box svg { width: var(--space-4); height: var(--space-4); display: none; }
+.checkbox[aria-checked="true"] .box {
+  background: var(--color-action-secondary);
+  border-color: var(--color-action-secondary);
+}
+.checkbox[aria-checked="true"] .box svg { display: block; }
+
+/* Buttons */
+.btn {
+  height: var(--size-button);
+  min-width: var(--size-tap);
+  padding: 0 var(--space-6);
+  border-radius: var(--radius-card);
+  font: var(--label-button);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 100%;
+}
+.btn-primary {
+  background: var(--color-action-primary);
+  color: var(--color-action-on-primary);
+  border: 0;
+}
+.btn-primary:hover { background: var(--color-action-primary-hover); }
+.btn-primary:active { background: var(--color-action-primary-pressed); }
+.btn-secondary {
+  background: var(--color-surface-card);
+  color: var(--color-action-secondary);
+  border: var(--border-width-control) solid var(--color-action-secondary);
+}
+.btn-secondary:hover { background: var(--color-action-secondary-hover); }
+.btn-secondary:active { background: var(--color-action-secondary-pressed); }
+.btn:disabled,
+.btn:disabled:hover {
+  background: var(--color-action-disabled);
+  color: var(--color-action-on-disabled);
+  border-color: var(--color-border-default);
+  cursor: not-allowed;
+}
+.btn-auto { width: auto; flex: none; }
+
+/* Suggestion */
+.suggestion { border-radius: var(--radius-chip); }
+.suggestion[hidden] { display: none; }
+.suggestion.is-open {
+  background: var(--color-surface-suggestion);
+  border: var(--border-width-default) dashed var(--color-border-suggestion);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.suggestion .tag { display: flex; align-items: center; gap: var(--space-1); color: var(--color-text-accent); }
+.suggestion .tag svg { width: var(--space-4); height: var(--space-4); display: block; }
+.suggestion .tag span {
+  font: var(--label-chip);
+  letter-spacing: var(--label-chip-tracking);
+  text-transform: uppercase;
+}
+.suggestion .amount { margin: 0; font: var(--body-strong); color: var(--color-text-primary); }
+.suggestion .basis { margin: 0; font: var(--body-caption); color: var(--color-text-secondary); }
+.suggestion .basis .q { color: var(--color-text-quote-mark); }
+.suggestion .actions { display: flex; gap: var(--space-2); padding-top: var(--space-2); }
+.suggestion .actions .btn { flex: 1; padding: 0 var(--space-3); }
+.suggestion.is-applied,
+.suggestion.is-dismissed {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3);
+}
+.suggestion.is-applied { background: var(--color-feedback-success-surface); }
+.suggestion.is-dismissed { background: var(--color-surface-sunken); }
+.suggestion .result-icon { width: var(--size-icon-sm); height: var(--size-icon-sm); flex: none; display: block; }
+.suggestion.is-applied .result-icon { color: var(--color-feedback-success); }
+.suggestion.is-dismissed .result-icon { color: var(--color-text-secondary); }
+.suggestion .result-text { flex: 1; min-width: 0; margin: 0; font: var(--body-small); color: var(--color-text-primary); }
+.suggestion .open-part,
+.suggestion .closed-part { display: contents; }
+.suggestion:not(.is-open) .open-part,
+.suggestion.is-open .closed-part { display: none; }
+
+/* Feedback message */
+.feedback {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-chip);
+  border-left: var(--border-width-rule) solid;
+}
+.feedback[hidden] { display: none; }
+.feedback svg { width: var(--size-icon-sm); height: var(--size-icon-sm); flex: none; display: block; }
+.feedback .text { display: flex; flex-direction: column; color: var(--color-text-primary); }
+.feedback .lead { margin: 0; font: var(--label-field); }
+.feedback .next { margin: 0; font: var(--body-small); }
+.feedback-warning { background: var(--color-feedback-warning-surface); border-left-color: var(--color-feedback-warning-rule); color: var(--color-feedback-warning); }
+.feedback-success { background: var(--color-feedback-success-surface); border-left-color: var(--color-feedback-success); color: var(--color-feedback-success); }
+.feedback-error { background: var(--color-feedback-error-surface); border-left-color: var(--color-feedback-error); color: var(--color-feedback-error); }
+
+.more { display: flex; flex-direction: column; gap: var(--space-2); }
+.more-reason { margin: 0; font: var(--body-small); color: var(--color-text-secondary); }
+.more-reason[hidden], .more[hidden] { display: none; }
+
+/* Sticky footer */
+.footer {
+  position: sticky;
+  bottom: 0;
+  background: var(--color-surface-page);
+  border-top: var(--border-width-default) solid var(--color-border-default);
+  padding: var(--space-3) var(--space-5) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sr-only {
+  position: absolute; width: var(--border-width-default); height: var(--border-width-default); padding: 0; margin: calc(-1 * var(--border-width-default));
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="topbar">
+    <button class="icon-button" id="back" type="button" data-i18n-aria="back" aria-label="Volver">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true"><path d="M15 5L8 12L15 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="lang" role="group" data-i18n-aria="language" aria-label="Idioma">
+      <button type="button" data-lang="es" aria-pressed="true">ES</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </header>
+
+  <main class="body">
+    <div class="title">
+      <h1 data-i18n="title">Lista del mandado</h1>
+      <p><span data-i18n="subtitle">Fideo y Picadillo, de</span> <span lang="es">Mamá Lupe</span></p>
+    </div>
+
+    <section class="card progress" aria-labelledby="progress-label">
+      <p class="section-label" id="progress-label" data-i18n="progressLabel">En el carrito</p>
+      <div class="progress-line">
+        <p class="progress-count" id="count" aria-live="polite">0 de 13</p>
+        <span class="progress-note" data-i18n="progressNote">cosas ya están en el carrito</span>
+      </div>
+      <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="13" aria-valuenow="0" id="bar" data-i18n-aria="progressLabel" aria-label="En el carrito">
+        <div class="bar-fill" id="bar-fill"></div>
+      </div>
+    </section>
+
+    <div id="groups"></div>
+
+    <div class="more" id="more">
+      <button class="btn btn-secondary" type="button" id="more-btn">Ver 3 sugerencias más</button>
+      <p class="more-reason" id="more-reason" hidden></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="feedback feedback-success" id="share-feedback" role="status" hidden>
+      <svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true"><path d="M6.66667 10.4167L9 12.75L13.75 7.91667M10 17.5C14.1421 17.5 17.5 14.1421 17.5 10C17.5 5.85786 14.1421 2.5 10 2.5C5.85786 2.5 2.5 5.85786 2.5 10C2.5 14.1421 5.85786 17.5 10 17.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="text">
+        <p class="lead" data-i18n="sharedLead">Lista copiada.</p>
+        <p class="next" data-i18n="sharedNext">Péguela en un mensaje para quien vaya a la tienda.</p>
+      </div>
+    </div>
+    <button class="btn btn-primary" type="button" id="share" data-i18n="share">Compartir la lista</button>
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var ICON_CHECK = '<svg viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden="true"><path d="M3.33333 8.33333L6.33333 11.3333L12.6667 5" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var ICON_SPARKLE = '<svg viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden="true"><path d="M8 2L9.2 5.46667L12.6667 6.66667L9.2 7.86667L8 11.3333L6.8 7.86667L3.33333 6.66667L6.8 5.46667L8 2ZM12.6667 10.6667L13.1333 12L14.4667 12.5333L13.1333 13L12.6667 14.3333L12.2 13L10.8667 12.5333L12.2 12L12.6667 10.6667Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var ICON_CHECK_CIRCLE = '<svg class="result-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true"><path d="M6.66667 10.4167L9 12.75L13.75 7.91667M10 17.5C14.1421 17.5 17.5 14.1421 17.5 10C17.5 5.85786 14.1421 2.5 10 2.5C5.85786 2.5 2.5 5.85786 2.5 10C2.5 14.1421 5.85786 17.5 10 17.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var ICON_X = '<svg class="result-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true"><path d="M5 5L15 15M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var ICON_WARNING = '<svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true"><path d="M10 8.33333V12.0833M10 14.3333V14.5833M10 2.91667L2.08333 16.6667H17.9167L10 2.91667Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  // Interface copy only. Her words, dish names and people's names never go here.
+  var STRINGS = {
+    es: {
+      title: "Lista del mandado",
+      subtitle: "Fideo y Picadillo, de",
+      back: "Volver",
+      language: "Idioma",
+      progressLabel: "En el carrito",
+      progressNote: "cosas ya están en el carrito",
+      count: function (n, t) { return n + " de " + t; },
+      groupMeta: function (n) { return "De Mamá Lupe · " + n + " cosas"; },
+      inCart: "En el carrito",
+      suggestion: "Sugerencia",
+      basis: "según lo que dijo:",
+      apply: "Aplicar",
+      dismiss: "Descartar",
+      undo: "Deshacer",
+      applied: "Aplicada:",
+      dismissed: "Descartada. Se queda como ella lo dijo.",
+      warnLead: "No estoy seguro de la cantidad.",
+      warnNext: "Pregúntele a Mamá Lupe.",
+      more: function (n) { return n === 1 ? "Ver 1 sugerencia más" : "Ver " + n + " sugerencias más"; },
+      moreReason: "Primero conteste las sugerencias abiertas. Así no se le juntan.",
+      share: "Compartir la lista",
+      sharedLead: "Lista copiada.",
+      sharedNext: "Péguela en un mensaje para quien vaya a la tienda.",
+      errorLead: "No se pudo copiar la lista.",
+      errorNext: "Intente otra vez en un momento.",
+      shareHeader: "Lista del mandado",
+      store: "para la tienda:"
+    },
+    en: {
+      title: "Shopping list",
+      subtitle: "Fideo and Picadillo, from",
+      back: "Back",
+      language: "Language",
+      progressLabel: "In the cart",
+      progressNote: "items are already in the cart",
+      count: function (n, t) { return n + " of " + t; },
+      groupMeta: function (n) { return "From Mamá Lupe · " + n + " items"; },
+      inCart: "In the cart",
+      suggestion: "Suggestion",
+      basis: "based on what she said:",
+      apply: "Apply",
+      dismiss: "Dismiss",
+      undo: "Undo",
+      applied: "Applied:",
+      dismissed: "Dismissed. It stays the way she said it.",
+      warnLead: "I'm not sure of the amount.",
+      warnNext: "Ask Mamá Lupe.",
+      more: function (n) { return n === 1 ? "See 1 more suggestion" : "See " + n + " more suggestions"; },
+      moreReason: "Answer the open suggestions first, so they don't pile up.",
+      share: "Share the list",
+      sharedLead: "List copied.",
+      sharedNext: "Paste it in a message for whoever goes to the store.",
+      errorLead: "The list couldn't be copied.",
+      errorNext: "Try again in a moment.",
+      shareHeader: "Shopping list",
+      store: "for the store:"
+    }
+  };
+
+  // Recipe data. `words` = her exact words (never translated).
+  // `suggest.amount` is app-generated interface copy, so it has ES/EN.
+  // `suggest.basis` quotes her words, so it is never translated.
+  var RECIPES = [
+    { id: "fideo", name: "Fideo", items: [
+      { id: "f1", words: "un paquetito de fideo, el delgadito",
+        suggest: { basis: "un paquetito", amount: { es: "≈ 1 paquete de fideo delgado (200 g)", en: "≈ 1 package of thin fideo (200 g)" } } },
+      { id: "f2", words: "un chorrito de aceite", warn: true },
+      { id: "f3", words: "dos tomates bien maduros" },
+      { id: "f4", words: "un pedacito de cebolla",
+        suggest: { basis: "un pedacito", amount: { es: "≈ 1 cebolla blanca chica", en: "≈ 1 small white onion" } } },
+      { id: "f5", words: "un diente de ajo, o dos si están chiquitos",
+        suggest: { basis: "un diente de ajo, o dos", amount: { es: "≈ 1 cabeza de ajo", en: "≈ 1 head of garlic" } } },
+      { id: "f6", words: "un puñito de comino",
+        suggest: { basis: "un puñito", amount: { es: "≈ 1 sobre de comino entero (25 g)", en: "≈ 1 packet of whole cumin (25 g)" } } },
+      { id: "f7", words: "consomé de pollo, una cucharada o al gusto" }
+    ]},
+    { id: "picadillo", name: "Picadillo", items: [
+      { id: "p1", words: "una libra de carne molida" },
+      { id: "p2", words: "dos o tres papas, depende del tamaño",
+        suggest: { basis: "dos o tres papas", amount: { es: "≈ 3 papas medianas (1 lb)", en: "≈ 3 medium potatoes (1 lb)" } } },
+      { id: "p3", words: "un pedazo de cebolla" },
+      { id: "p4", words: "un tomate picadito" },
+      { id: "p5", words: "comino y pimienta, lo que agarre con la mano", warn: true },
+      { id: "p6", words: "sal al gusto" }
+    ]}
+  ];
+
+  var MAX_OPEN = 2;
+  var lang = "es";
+  var checked = {};
+  var suggestions = []; // { id, state: open|applied|dismissed, visible }
+  var allItems = [];
+
+  RECIPES.forEach(function (r) {
+    r.items.forEach(function (it) {
+      allItems.push(it);
+      if (it.suggest) suggestions.push({ id: it.id, item: it, state: "open", visible: false });
+    });
+  });
+  suggestions.forEach(function (s, i) { s.visible = i < MAX_OPEN; });
+
+  function t(key) { return STRINGS[lang][key]; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  function buildGroups() {
+    var root = document.getElementById("groups");
+    root.style.display = "flex";
+    root.style.flexDirection = "column";
+    root.style.gap = "var(--space-6)";
+    var html = "";
+    RECIPES.forEach(function (r) {
+      html += '<section class="group" aria-labelledby="g-' + r.id + '">' +
+        '<div class="group-head"><h2 id="g-' + r.id + '" lang="es">' + esc(r.name) + '</h2>' +
+        '<p data-meta="' + r.items.length + '"></p></div>' +
+        '<ul class="card list">';
+      r.items.forEach(function (it) {
+        html += '<li class="item" data-item="' + it.id + '">' +
+          '<div class="line">' +
+            '<button type="button" class="checkbox" role="checkbox" aria-checked="false" aria-labelledby="w-' + it.id + '" data-check="' + it.id + '"><span class="box">' + ICON_CHECK + '</span></button>' +
+            '<div class="line-text">' +
+              '<p class="her-words" id="w-' + it.id + '" lang="es" data-check="' + it.id + '">' + esc(it.words) + '</p>' +
+              '<p class="status" id="s-' + it.id + '" hidden data-i18n="inCart"></p>' +
+            '</div>' +
+          '</div>';
+        if (it.suggest) {
+          html += '<div class="suggestion is-open" data-sugg="' + it.id + '" hidden>' +
+            '<div class="open-part">' +
+              '<div class="tag">' + ICON_SPARKLE + '<span data-i18n="suggestion"></span></div>' +
+              '<p class="amount" data-amount="' + it.id + '"></p>' +
+              '<p class="basis"><span data-i18n="basis"></span> <span lang="es"><span class="q">“</span>' + esc(it.suggest.basis) + '<span class="q">”</span></span></p>' +
+              '<div class="actions">' +
+                '<button type="button" class="btn btn-secondary" data-act="apply" data-i18n="apply"></button>' +
+                '<button type="button" class="btn btn-secondary" data-act="dismiss" data-i18n="dismiss"></button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="closed-part">' +
+              '<span class="icon-slot"></span>' +
+              '<p class="result-text" role="status"></p>' +
+              '<button type="button" class="btn btn-secondary btn-auto" data-act="undo" data-i18n="undo"></button>' +
+            '</div>' +
+          '</div>';
+        }
+        if (it.warn) {
+          html += '<div class="feedback feedback-warning">' + ICON_WARNING +
+            '<div class="text"><p class="lead" data-i18n="warnLead"></p><p class="next" data-i18n="warnNext"></p></div></div>';
+        }
+        html += '</li>';
+      });
+      html += '</ul></section>';
+    });
+    root.innerHTML = html;
+  }
+
+  function findSugg(id) { for (var i = 0; i < suggestions.length; i++) if (suggestions[i].id === id) return suggestions[i]; }
+  function openVisibleCount() { return suggestions.filter(function (s) { return s.visible && s.state === "open"; }).length; }
+  function hiddenCount() { return suggestions.filter(function (s) { return !s.visible; }).length; }
+
+  function renderSuggestions(focusId) {
+    suggestions.forEach(function (s) {
+      var el = document.querySelector('[data-sugg="' + s.id + '"]');
+      el.hidden = !s.visible;
+      el.classList.toggle("is-open", s.state === "open");
+      el.classList.toggle("is-applied", s.state === "applied");
+      el.classList.toggle("is-dismissed", s.state === "dismissed");
+      el.querySelector('[data-amount]').textContent = s.item.suggest.amount[lang];
+      var slot = el.querySelector(".icon-slot");
+      var text = el.querySelector(".result-text");
+      if (s.state === "applied") {
+        slot.innerHTML = ICON_CHECK_CIRCLE;
+        text.textContent = t("applied") + " " + s.item.suggest.amount[lang];
+      } else if (s.state === "dismissed") {
+        slot.innerHTML = ICON_X;
+        text.textContent = t("dismissed");
+      } else {
+        slot.innerHTML = "";
+        text.textContent = "";
+      }
+      slot.style.display = "contents";
+    });
+    var more = document.getElementById("more");
+    var btn = document.getElementById("more-btn");
+    var reason = document.getElementById("more-reason");
+    var hidden = hiddenCount();
+    more.hidden = hidden === 0;
+    btn.textContent = t("more")(hidden);
+    var blocked = openVisibleCount() >= MAX_OPEN;
+    btn.disabled = blocked;
+    reason.hidden = !blocked;
+    reason.textContent = t("moreReason");
+    reason.id = "more-reason";
+    if (blocked) btn.setAttribute("aria-describedby", "more-reason"); else btn.removeAttribute("aria-describedby");
+    if (focusId) {
+      var target = document.querySelector('[data-sugg="' + focusId + '"] ' + (findSugg(focusId).state === "open" ? '[data-act="apply"]' : '[data-act="undo"]'));
+      if (target) target.focus();
+    }
+  }
+
+  function renderProgress() {
+    var total = allItems.length;
+    var n = allItems.filter(function (it) { return checked[it.id]; }).length;
+    document.getElementById("count").textContent = t("count")(n, total);
+    var bar = document.getElementById("bar");
+    bar.setAttribute("aria-valuenow", n);
+    bar.setAttribute("aria-valuetext", t("count")(n, total));
+    document.getElementById("bar-fill").style.width = (total ? (n / total) * 100 : 0) + "%";
+  }
+
+  function renderChecks() {
+    allItems.forEach(function (it) {
+      var cb = document.querySelector('.checkbox[data-check="' + it.id + '"]');
+      cb.setAttribute("aria-checked", checked[it.id] ? "true" : "false");
+      document.getElementById("s-" + it.id).hidden = !checked[it.id];
+    });
+    renderProgress();
+  }
+
+  function applyLanguage() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var v = t(el.getAttribute("data-i18n"));
+      if (typeof v === "string") el.textContent = v;
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach(function (el) {
+      el.setAttribute("aria-label", t(el.getAttribute("data-i18n-aria")));
+    });
+    document.querySelectorAll("[data-meta]").forEach(function (el) {
+      el.textContent = t("groupMeta")(Number(el.getAttribute("data-meta")));
+    });
+    document.querySelectorAll(".lang button").forEach(function (b) {
+      b.setAttribute("aria-pressed", b.getAttribute("data-lang") === lang ? "true" : "false");
+    });
+    var fb = document.getElementById("share-feedback");
+    if (!fb.hidden) showShareResult(fb.getAttribute("data-ok") === "true");
+    renderSuggestions();
+    renderProgress();
+  }
+
+  function buildShareText() {
+    var lines = [t("shareHeader")];
+    RECIPES.forEach(function (r) {
+      lines.push("", r.name + " (Mamá Lupe)");
+      r.items.forEach(function (it) {
+        var line = (checked[it.id] ? "[x] " : "[ ] ") + it.words;
+        var s = findSugg(it.id);
+        if (s && s.state === "applied") line += " — " + t("store") + " " + s.item.suggest.amount[lang];
+        lines.push(line);
+      });
+    });
+    return lines.join("\n");
+  }
+
+  function copyText(text) {
+    try {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.className = "sr-only";
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) { return false; }
+  }
+
+  function showShareResult(ok) {
+    var fb = document.getElementById("share-feedback");
+    fb.hidden = false;
+    fb.setAttribute("data-ok", ok ? "true" : "false");
+    fb.className = "feedback " + (ok ? "feedback-success" : "feedback-error");
+    fb.querySelector(".lead").textContent = ok ? t("sharedLead") : t("errorLead");
+    fb.querySelector(".next").textContent = ok ? t("sharedNext") : t("errorNext");
+  }
+
+  buildGroups();
+
+  document.getElementById("groups").addEventListener("click", function (e) {
+    var check = e.target.closest("[data-check]");
+    if (check) {
+      var id = check.getAttribute("data-check");
+      checked[id] = !checked[id];
+      renderChecks();
+      return;
+    }
+    var act = e.target.closest("[data-act]");
+    if (act) {
+      var sid = act.closest("[data-sugg]").getAttribute("data-sugg");
+      var s = findSugg(sid);
+      var a = act.getAttribute("data-act");
+      if (a === "apply") s.state = "applied";
+      else if (a === "dismiss") s.state = "dismissed";
+      else if (a === "undo") s.state = "open";
+      renderSuggestions(sid);
+    }
+  });
+
+  document.getElementById("more-btn").addEventListener("click", function () {
+    var room = MAX_OPEN - openVisibleCount();
+    suggestions.forEach(function (s) {
+      if (room > 0 && !s.visible) { s.visible = true; room--; }
+    });
+    renderSuggestions();
+  });
+
+  document.querySelectorAll(".lang button").forEach(function (b) {
+    b.addEventListener("click", function () { lang = b.getAttribute("data-lang"); applyLanguage(); });
+  });
+
+  document.getElementById("back").addEventListener("click", function () { history.back(); });
+
+  document.getElementById("share").addEventListener("click", function () {
+    showShareResult(copyText(buildShareText()));
+  });
+
+  applyLanguage();
+  renderChecks();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+/*
+  Design tokens — defined once, used everywhere as Tailwind utilities
+  (bg-terracotta, text-step, min-h-tap, rounded-card, shadow-card …).
+*/
+@theme {
+  /* Palette: mom's kitchen */
+  --color-terracotta: #b4532f;
+  --color-terracotta-dark: #8a3b1e;
+  --color-terracotta-soft: #f4dccd;
+  --color-cream: #fbf4e6;
+  --color-cream-deep: #f3e5cc;
+  --color-paper: #fffbf3;
+  --color-green: #2f4b3a;
+  --color-green-dark: #213629;
+  --color-green-soft: #e2eadc;
+  --color-yellow: #f1cf72;
+  --color-yellow-soft: #fbf0c9;
+  --color-ink: #2f221b;
+  --color-ink-soft: #6a5345;
+  --color-line: #e6d4b8;
+  --color-error: #9a2a1a;
+  --color-error-soft: #f8dcd4;
+  --color-desk: #e9dcc6;
+
+  /* Type */
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Nunito Sans", system-ui, sans-serif;
+
+  --text-caption: 0.875rem;
+  --text-caption--line-height: 1.4;
+  --text-small: 0.9375rem;
+  --text-small--line-height: 1.45;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.55;
+  --text-lead: 1.1875rem;
+  --text-lead--line-height: 1.5;
+  --text-title: 1.375rem;
+  --text-title--line-height: 1.25;
+  --text-display: 1.875rem;
+  --text-display--line-height: 1.15;
+  --text-step: 1.625rem;
+  --text-step--line-height: 1.4;
+  --text-timer: 3rem;
+  --text-timer--line-height: 1;
+
+  /* Sizes */
+  --spacing-tap: 2.75rem;          /* 44px minimum touch target */
+  --spacing-tap-lg: 3.5rem;        /* primary buttons */
+  --spacing-record: 8.5rem;        /* big record button */
+  --spacing-wave: 5rem;            /* waveform height */
+  --spacing-photo: 7.5rem;         /* recipe card photo */
+  --spacing-hero: 11rem;           /* recipe detail photo */
+  --spacing-frame-w: 390px;        /* phone frame */
+  --spacing-frame-h: 844px;
+  --spacing-sheet: 85%;
+
+  /* Shape */
+  --radius-chip: 0.75rem;
+  --radius-card: 1.5rem;
+  --radius-sheet: 1.75rem;
+  --radius-phone: 3rem;
+
+  --shadow-card: 0 2px 0 0 rgb(47 34 27 / 0.06), 0 8px 24px -12px rgb(47 34 27 / 0.25);
+  --shadow-phone: 0 30px 80px -20px rgb(47 34 27 / 0.45), 0 0 0 10px #2f221b;
+  --shadow-sheet: 0 -12px 40px -10px rgb(47 34 27 / 0.35);
+
+  /* Motion */
+  --animate-pulse-ring: pulse-ring 1.6s ease-out infinite;
+  --animate-sheet-in: sheet-in 0.28s ease-out;
+  --animate-fade-in: fade-in 0.25s ease-out;
+  --animate-dots: dots 1.2s ease-in-out infinite;
+
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 0.55; }
+    100% { transform: scale(1.45); opacity: 0; }
+  }
+  @keyframes sheet-in {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes dots {
+    0%, 100% { opacity: 0.25; }
+    50% { opacity: 1; }
+  }
+}
+
+@layer base {
+  html, body, #root { height: 100%; }
+  body {
+    background: var(--color-desk);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  button { cursor: pointer; }
+  button:disabled { cursor: not-allowed; }
+  :focus-visible {
+    outline: 3px solid var(--color-green);
+    outline-offset: 2px;
+  }
+}
+
+:root {
+  --pattern-dot-size: 1.5px;
+  --pattern-dot-gap: 14px;
+}
+
+@layer utilities {
+  .bg-dots {
+    background-image: radial-gradient(currentColor var(--pattern-dot-size), transparent var(--pattern-dot-size));
+    background-size: var(--pattern-dot-gap) var(--pattern-dot-gap);
+  }
+  .scrollbar-none { scrollbar-width: none; }
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+}

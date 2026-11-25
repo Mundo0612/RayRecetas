@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lista del mandado · Recetas de Familia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* ---- Figma: Color (semantic) ---- */
+  --color-action-primary: #b4532f;
+  --color-action-primary-hover: #8a3b1e;
+  --color-action-primary-pressed: #6f2f17;
+  --color-action-on-primary: #fffbf3;
+  --color-action-secondary: #2f4b3a;
+  --color-action-secondary-hover: #e2eadc;
+  --color-action-secondary-pressed: #cbd9c3;
+  --color-surface-page: #fbf4e6;
+  --color-surface-card: #fffbf3;
+  --color-surface-sunken: #f3e5cc;
+  --color-surface-suggestion: #f4dccd;
+  --color-text-primary: #2f221b;
+  --color-text-secondary: #6a5345;
+  --color-text-accent: #8a3b1e;
+  --color-text-quote-mark: #b4532f;
+  --color-border-default: #e6d4b8;
+  --color-border-input: #6a5345;
+  --color-border-focus: #2f4b3a;
+  --color-border-suggestion: #b4532f;
+  --color-feedback-success: #2f4b3a;
+  --color-feedback-success-surface: #e2eadc;
+  --color-feedback-warning: #8a3b1e;
+  --color-feedback-warning-surface: #fbf0c9;
+  --color-feedback-warning-rule: #f1cf72;
+
+  /* ---- Figma: Spacing ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --radius-chip: 12px;
+  --radius-card: 24px;
+  --radius-sheet: 28px;
+  --radius-full: 999px;
+  --size-tap: 44px;
+  --size-button: 56px;
+  --size-icon: 24px;
+  --border-width-default: 1px;
+  --border-width-control: 2px;
+  --border-width-focus: 3px;
+
+  /* ---- Figma: text styles (as font shorthands) ---- */
+  --font-heading-display: 600 30px/1.15 "Fraunces", Georgia, serif;
+  --font-heading-title: 600 22px/1.25 "Fraunces", Georgia, serif;
+  --font-heading-subtitle: 700 19px/1.3 "Nunito Sans", system-ui, sans-serif;
+  --font-body-default: 400 17px/1.55 "Nunito Sans", system-ui, sans-serif;
+  --font-body-strong: 700 17px/1.55 "Nunito Sans", system-ui, sans-serif;
+  --font-body-small: 400 15px/1.45 "Nunito Sans", system-ui, sans-serif;
+  --font-body-caption: 400 14px/1.4 "Nunito Sans", system-ui, sans-serif;
+  --font-label-button: 700 17px/1.2 "Nunito Sans", system-ui, sans-serif;
+  --font-label-field: 700 15px/1.3 "Nunito Sans", system-ui, sans-serif;
+  --font-label-section: 800 14px/1.3 "Nunito Sans", system-ui, sans-serif;
+  --font-label-chip: 800 13px/1.3 "Nunito Sans", system-ui, sans-serif;
+  --tracking-label-section: 0.08em;
+  --tracking-label-chip: 0.06em;
+
+  /* ---- NOT in Figma variables (values read off components / invented; flagged in report) ---- */
+  --layout-max-width: 390px;            /* guideline rule 11 says "390 wide", no variable */
+  --border-width-rule: 4px;             /* Feedback message left rule, raw 4px in component */
+  --size-icon-feedback: 20px;           /* feedback / suggestion state icons, raw 20px */
+  --size-icon-tag: 16px;                /* sparkle icon in Suggestion tag, raw 16px */
+  --size-progress-track: 8px;           /* invented: progress bar height (= space-2 value) */
+  --shadow-toggle-thumb: 0 2px 6px 0 rgba(46, 33, 26, 0.15); /* raw effect on Language toggle */
+}
+
+* { box-sizing: border-box; }
+html { background: var(--color-surface-sunken); }
+body {
+  margin: 0;
+  background: var(--color-surface-sunken);
+  color: var(--color-text-primary);
+  font: var(--font-body-default);
+  -webkit-font-smoothing: antialiased;
+}
+.app {
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--color-surface-page);
+  display: flex;
+  flex-direction: column;
+}
+p, h1, h2, ul { margin: 0; padding: 0; }
+ul { list-style: none; }
+svg { display: block; flex-shrink: 0; }
+
+/* Shared focus treatment (rule 5) */
+.focusable:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--border-width-control) var(--color-surface-page),
+              0 0 0 calc(var(--border-width-control) + var(--border-width-focus)) var(--color-border-focus);
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--space-3) var(--space-3) 0;
+}
+.back {
+  width: var(--size-tap); height: var(--size-tap);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-card);
+  border: var(--border-width-default) solid var(--color-border-default);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+.lang {
+  display: flex; padding: var(--space-1);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-full);
+}
+.lang button {
+  width: var(--size-tap); height: var(--size-tap);
+  border: 0; border-radius: var(--radius-full);
+  background: transparent;
+  font: var(--font-label-field);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+.lang button[aria-pressed="true"] {
+  background: var(--color-surface-card);
+  color: var(--color-text-accent);
+  box-shadow: var(--shadow-toggle-thumb);
+}
+
+/* ---------- Body ---------- */
+.body {
+  flex: 1;
+  display: flex; flex-direction: column; gap: var(--space-6);
+  padding: var(--space-6) var(--space-5) var(--space-8);
+}
+.title { display: flex; flex-direction: column; gap: var(--space-1); }
+.title h1 { font: var(--font-heading-display); }
+.title .from { font: var(--font-body-strong); color: var(--color-text-accent); }
+
+.section-label {
+  font: var(--font-label-section);
+  letter-spacing: var(--tracking-label-section);
+  text-transform: uppercase;
+  color: var(--color-text-accent);
+}
+
+.card {
+  background: var(--color-surface-card);
+  border: var(--border-width-default) solid var(--color-border-default);
+  border-radius: var(--radius-card);
+}
+
+/* Progress summary */
+.progress { padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
+.progress .count { font: var(--font-heading-subtitle); }
+.track {
+  height: var(--size-progress-track);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-sunken);
+  overflow: hidden;
+}
+.fill {
+  height: 100%;
+  width: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-feedback-success);
+  transition: width .2s ease;
+}
+.progress .hint { font: var(--font-body-small); color: var(--color-text-secondary); }
+
+/* Recipe group */
+.group { display: flex; flex-direction: column; gap: var(--space-3); }
+.group-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
+.group-head h2 { font: var(--font-heading-title); }
+.group-head .meta { font: var(--font-body-caption); color: var(--color-text-secondary); }
+.list { padding: var(--space-1) var(--space-4); }
+.item {
+  display: flex; flex-direction: column; gap: var(--space-2);
+  padding: var(--space-3) 0;
+  border-bottom: var(--border-width-default) solid var(--color-border-default);
+}
+.item:last-child { border-bottom: 0; }
+
+/* Check row (no checkbox component in the system) */
+.check {
+  display: flex; align-items: center; gap: var(--space-3);
+  min-height: var(--size-tap);
+  cursor: pointer;
+}
+.check input { position: absolute; opacity: 0; width: 0; height: 0; }
+.box {
+  width: var(--size-tap); height: var(--size-tap);
+  margin: 0 calc(var(--space-2) * -1) 0 calc(var(--space-2) * -1);
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  border-radius: var(--radius-chip);
+}
+.box span {
+  width: var(--size-icon); height: var(--size-icon);
+  border: var(--border-width-control) solid var(--color-border-input);
+  border-radius: var(--space-2);
+  background: var(--color-surface-card);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--color-action-on-primary);
+}
+.box svg { visibility: hidden; }
+.check input:checked + .box span {
+  background: var(--color-action-secondary);
+  border-color: var(--color-action-secondary);
+}
+.check input:checked + .box svg { visibility: visible; }
+.check input:focus-visible + .box {
+  box-shadow: 0 0 0 var(--border-width-control) var(--color-surface-card),
+              0 0 0 calc(var(--border-width-control) + var(--border-width-focus)) var(--color-border-focus);
+}
+.words { flex: 1; font: var(--font-body-default); }
+.q { color: var(--color-text-quote-mark); }
+.check input:checked ~ .words { color: var(--color-text-secondary); }
+.in-cart {
+  display: none;
+  font: var(--font-label-chip);
+  letter-spacing: var(--tracking-label-chip);
+  text-transform: uppercase;
+  color: var(--color-feedback-success);
+}
+.check input:checked ~ .words .in-cart { display: block; }
+
+/* ---------- Button (Figma 3:22) ---------- */
+.btn {
+  height: var(--size-button);
+  min-width: var(--size-tap);
+  padding: 0 var(--space-6);
+  border-radius: var(--radius-card);
+  font: var(--font-label-button);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-primary {
+  width: 100%;
+  border: 0;
+  background: var(--color-action-primary);
+  color: var(--color-action-on-primary);
+}
+.btn-primary:hover { background: var(--color-action-primary-hover); }
+.btn-primary:active { background: var(--color-action-primary-pressed); }
+.btn-secondary {
+  background: var(--color-surface-card);
+  color: var(--color-action-secondary);
+  border: var(--border-width-control) solid var(--color-action-secondary);
+}
+.btn-secondary:hover { background: var(--color-action-secondary-hover); }
+.btn-secondary:active { background: var(--color-action-secondary-pressed); }
+
+/* ---------- Suggestion (Figma 4:45) ---------- */
+.sugg { border-radius: var(--radius-chip); }
+.sugg[data-state="open"] {
+  background: var(--color-surface-suggestion);
+  border: var(--border-width-default) dashed var(--color-border-suggestion);
+  padding: var(--space-3);
+  display: flex; flex-direction: column; gap: var(--space-1);
+}
+.sugg .tag {
+  display: flex; align-items: center; gap: var(--space-2);
+  font: var(--font-label-chip);
+  letter-spacing: var(--tracking-label-chip);
+  text-transform: uppercase;
+  color: var(--color-text-accent);
+}
+.sugg .amount { font: var(--font-body-strong); }
+.sugg .basis { font: var(--font-body-caption); color: var(--color-text-secondary); }
+.sugg .actions { display: flex; gap: var(--space-2); padding-top: var(--space-2); }
+.sugg .actions .btn { flex: 1; padding: 0 var(--space-3); }
+.sugg[data-state="applied"], .sugg[data-state="dismissed"] {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3);
+  font: var(--font-body-small);
+}
+.sugg[data-state="applied"] { background: var(--color-feedback-success-surface); color: var(--color-feedback-success); }
+.sugg[data-state="dismissed"] { background: var(--color-surface-sunken); color: var(--color-text-secondary); }
+.sugg .state-text { flex: 1; color: var(--color-text-primary); }
+.sugg .btn { flex-shrink: 0; }
+
+/* ---------- Feedback message (Figma 4:20) ---------- */
+.fb {
+  display: flex; align-items: flex-start; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-chip);
+  border-left: var(--border-width-rule) solid;
+  font: var(--font-body-small);
+}
+.fb-warning { background: var(--color-feedback-warning-surface); border-left-color: var(--color-feedback-warning-rule); color: var(--color-feedback-warning); }
+.fb-success { background: var(--color-feedback-success-surface); border-left-color: var(--color-feedback-success); color: var(--color-feedback-success); }
+.fb .txt { display: flex; flex-direction: column; gap: var(--space-1); color: var(--color-text-primary); }
+.fb .lead { font: var(--font-label-field); }
+.fb[hidden] { display: none; }
+
+/* ---------- Footer action ---------- */
+.footer {
+  position: sticky; bottom: 0;
+  background: var(--color-surface-page);
+  border-top: var(--border-width-default) solid var(--color-border-default);
+  padding: var(--space-3) var(--space-5) var(--space-6);
+  display: flex; flex-direction: column; gap: var(--space-3);
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Hidden icon sprite (icons from Figma, strokes switched to currentColor) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5L8 12L15 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 16 16"><path d="M8 2L9.2 5.46667L12.6667 6.66667L9.2 7.86667L8 11.3333L6.8 7.86667L3.33333 6.66667L6.8 5.46667L8 2ZM12.6667 10.6667L13.1333 12L14.4667 12.5333L13.1333 13L12.6667 14.3333L12.2 13L10.8667 12.5333L12.2 12L12.6667 10.6667Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-check-circle" viewBox="0 0 20 20"><path d="M6.66667 10.4167L9 12.75L13.75 7.91667M10 17.5C14.1421 17.5 17.5 14.1421 17.5 10C17.5 5.85786 14.1421 2.5 10 2.5C5.85786 2.5 2.5 5.85786 2.5 10C2.5 14.1421 5.85786 17.5 10 17.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 20 20"><path d="M5 5L15 15M15 5L5 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-warning" viewBox="0 0 20 20"><path d="M10 8.33333V12.0833M10 14.3333V14.5833M10 2.91667L2.08333 16.6667H17.9167L10 2.91667Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-tick" viewBox="0 0 20 20"><path d="M5 10.5L8.5 14L15 6.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </svg>
+
+  <header class="topbar">
+    <a class="back focusable" href="#" data-i18n-aria="back">
+      <svg width="24" height="24"><use href="#i-back"/></svg>
+    </a>
+    <div class="lang" role="group" data-i18n-aria="lang">
+      <button type="button" class="focusable" data-lang="es" aria-pressed="true" lang="es">ES</button>
+      <button type="button" class="focusable" data-lang="en" aria-pressed="false" lang="en">EN</button>
+    </div>
+  </header>
+
+  <main class="body">
+    <div class="title">
+      <h1 data-i18n="title">Lista del mandado</h1>
+      <p class="from" data-i18n="from">Fideo y Picadillo · De Mamá Lupe</p>
+    </div>
+
+    <section class="card progress" aria-live="polite">
+      <p class="count" id="count"></p>
+      <div class="track" aria-hidden="true"><div class="fill" id="fill"></div></div>
+      <p class="hint" id="hint"></p>
+    </section>
+
+    <div id="groups"></div>
+  </main>
+
+  <footer class="footer">
+    <div class="fb fb-success" id="shared" role="status" hidden>
+      <svg width="20" height="20" aria-hidden="true"><use href="#i-check-circle"/></svg>
+      <div class="txt"><p class="lead" data-i18n="sharedLead"></p><p data-i18n="sharedNext"></p></div>
+    </div>
+    <button type="button" class="btn btn-primary focusable" id="share" data-i18n="share">Compartir la lista</button>
+  </footer>
+</div>
+
+<script>
+const T = {
+  es: {
+    title: "Lista del mandado",
+    from: "Fideo y Picadillo · De Mamá Lupe",
+    back: "Regresar",
+    lang: "Idioma",
+    byRecipe: "Por receta",
+    fromHer: "De Mamá Lupe",
+    count: (n, t) => `${n} de ${t} en el carrito`,
+    hintLeft: (n) => n === 1 ? "Le falta 1 cosa." : `Le faltan ${n} cosas.`,
+    hintDone: "Ya tiene todo. ¡A cocinar!",
+    groupMeta: (n, t) => `${n} de ${t}`,
+    inCart: "En el carrito",
+    suggestion: "Sugerencia",
+    basis: (q) => `según lo que dijo: “${q}”`,
+    apply: "Aplicar",
+    dismiss: "Descartar",
+    undo: "Deshacer",
+    applied: (a) => `Aplicada: ${a}`,
+    dismissed: "Descartada. Se queda como ella lo dijo.",
+    warnLead: "No estoy seguro de la cantidad.",
+    warnNext: "Pregúntele a Mamá Lupe.",
+    share: "Compartir la lista",
+    sharedLead: "Lista copiada.",
+    sharedNext: "Ya la puede pegar en un mensaje.",
+    shareHeader: "Lista del mandado · Fideo y Picadillo",
+    buy: "comprar",
+  },
+  en: {
+    title: "Shopping list",
+    from: "Fideo and Picadillo · From Mamá Lupe",
+    back: "Go back",
+    lang: "Language",
+    byRecipe: "By recipe",
+    fromHer: "From Mamá Lupe",
+    count: (n, t) => `${n} of ${t} in the cart`,
+    hintLeft: (n) => n === 1 ? "1 thing left." : `${n} things left.`,
+    hintDone: "You have everything. Time to cook!",
+    groupMeta: (n, t) => `${n} of ${t}`,
+    inCart: "In the cart",
+    suggestion: "Suggestion",
+    basis: (q) => `based on what she said: “${q}”`,
+    apply: "Apply",
+    dismiss: "Dismiss",
+    undo: "Undo",
+    applied: (a) => `Applied: ${a}`,
+    dismissed: "Dismissed. It stays the way she said it.",
+    warnLead: "I'm not sure how much.",
+    warnNext: "Ask Mamá Lupe.",
+    share: "Share the list",
+    sharedLead: "List copied.",
+    sharedNext: "You can paste it into a message.",
+    shareHeader: "Shopping list · Fideo and Picadillo",
+    buy: "buy",
+  }
+};
+
+/* Her words: verbatim, never translated. Suggestion amounts are interface text. */
+const RECIPES = [
+  { id: "fideo", name: "Fideo", items: [
+    { id: "f1", words: "un paquetito de fideo, el delgadito", sugg: { basis: "un paquetito", es: "1 paquete de fideo fino (200 g)", en: "1 package of thin fideo (200 g)" } },
+    { id: "f2", words: "un chorrito de aceite", sugg: { basis: "un chorrito", es: "1 botella chica de aceite vegetal (500 ml)", en: "1 small bottle of vegetable oil (500 ml)" } },
+    { id: "f3", words: "dos tomates bien maduros", checked: true },
+    { id: "f4", words: "un pedacito de cebolla", sugg: { basis: "un pedacito", es: "1 cebolla blanca chica", en: "1 small white onion" } },
+    { id: "f5", words: "un diente de ajo, o dos si están chiquitos", checked: true },
+    { id: "f6", words: "un puñito de comino", sugg: { basis: "un puñito", es: "1 sobre de comino entero (25 g)", en: "1 packet of whole cumin (25 g)" } },
+    { id: "f7", words: "consomé de pollo, una cucharada o al gusto", sugg: { basis: "una cucharada o al gusto", es: "1 frasco chico de consomé en polvo (100 g)", en: "1 small jar of powdered bouillon (100 g)" } },
+  ]},
+  { id: "picadillo", name: "Picadillo", items: [
+    { id: "p1", words: "una libra de carne molida", checked: true },
+    { id: "p2", words: "dos o tres papas, depende del tamaño", sugg: { basis: "dos o tres papas", es: "3 papas medianas (≈ 1 lb)", en: "3 medium potatoes (≈ 1 lb)" } },
+    { id: "p3", words: "un pedazo de cebolla", sugg: { basis: "un pedazo", es: "1 cebolla blanca mediana", en: "1 medium white onion" } },
+    { id: "p4", words: "un tomate picadito" },
+    { id: "p5", words: "comino y pimienta, lo que agarre con la mano", warn: true },
+    { id: "p6", words: "sal al gusto", warn: true },
+  ]},
+];
+
+const state = { lang: "es", checked: {}, sugg: {} };
+RECIPES.forEach(r => r.items.forEach(it => {
+  state.checked[it.id] = !!it.checked;
+  if (it.sugg) state.sugg[it.id] = "open";
+}));
+
+const t = () => T[state.lang];
+const esc = (s) => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const icon = (id, size) => `<svg width="${size}" height="${size}" aria-hidden="true"><use href="#${id}"/></svg>`;
+
+function suggestionHTML(it) {
+  const s = it.sugg, st = state.sugg[it.id], L = t(), amount = s[state.lang];
+  if (st === "open") {
+    return `<div class="sugg" data-state="open" role="group" aria-label="${L.suggestion}">
+      <p class="tag">${icon("i-sparkle", 16)}<span>${L.suggestion}</span></p>
+      <p class="amount">≈ ${esc(amount)}</p>
+      <p class="basis" lang="${state.lang}">${esc(L.basis(s.basis))}</p>
+      <div class="actions">
+        <button type="button" class="btn btn-secondary focusable" data-act="apply" data-id="${it.id}">${L.apply}</button>
+        <button type="button" class="btn btn-secondary focusable" data-act="dismiss" data-id="${it.id}">${L.dismiss}</button>
+      </div></div>`;
+  }
+  const applied = st === "applied";
+  return `<div class="sugg" data-state="${st}" role="status">
+    ${icon(applied ? "i-check-circle" : "i-x", 20)}
+    <p class="state-text">${esc(applied ? L.applied(amount) : L.dismissed)}</p>
+    <button type="button" class="btn btn-secondary focusable" data-act="undo" data-id="${it.id}">${L.undo}</button>
+  </div>`;
+}
+
+function warningHTML() {
+  const L = t();
+  return `<div class="fb fb-warning" role="note">${icon("i-warning", 20)}
+    <div class="txt"><p class="lead">${L.warnLead}</p><p>${L.warnNext}</p></div></div>`;
+}
+
+function render() {
+  const L = t();
+  const total = RECIPES.reduce((a, r) => a + r.items.length, 0);
+  const done = Object.values(state.checked).filter(Boolean).length;
+
+  document.documentElement.lang = state.lang;
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = L[el.dataset.i18n]; });
+  document.querySelectorAll("[data-i18n-aria]").forEach(el => el.setAttribute("aria-label", L[el.dataset.i18nAria]));
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === state.lang)));
+  document.title = `${L.title} · Recetas de Familia`;
+
+  document.getElementById("count").textContent = L.count(done, total);
+  document.getElementById("fill").style.width = `${(done / total) * 100}%`;
+  document.getElementById("hint").textContent = done === total ? L.hintDone : L.hintLeft(total - done);
+
+  const focusedKey = document.activeElement && document.activeElement.dataset ? (document.activeElement.dataset.id || "") + (document.activeElement.dataset.act || "") : "";
+
+  document.getElementById("groups").innerHTML =
+    `<div class="group"><p class="section-label">${L.byRecipe}</p></div>` +
+    RECIPES.map(r => {
+      const n = r.items.filter(i => state.checked[i.id]).length;
+      return `<section class="group" aria-labelledby="h-${r.id}" style="margin-top: var(--space-3)">
+        <div class="group-head">
+          <h2 id="h-${r.id}" lang="es">${r.name}</h2>
+          <p class="meta">${L.fromHer} · ${L.groupMeta(n, r.items.length)}</p>
+        </div>
+        <ul class="card list">
+          ${r.items.map(it => `<li class="item">
+            <label class="check">
+              <input type="checkbox" data-id="${it.id}" data-act="check" ${state.checked[it.id] ? "checked" : ""}>
+              <span class="box"><span>${icon("i-tick", 18)}</span></span>
+              <span class="words" lang="es"><span class="q">“</span>${esc(it.words)}<span class="q">”</span>
+                <span class="in-cart" lang="${state.lang}">${L.inCart}</span></span>
+            </label>
+            ${it.sugg ? suggestionHTML(it) : ""}
+            ${it.warn ? warningHTML() : ""}
+          </li>`).join("")}
+        </ul></section>`;
+    }).join("");
+
+  if (focusedKey) {
+    const el = [...document.querySelectorAll("#groups [data-id]")].find(e => e.dataset.id + e.dataset.act === focusedKey)
+      || [...document.querySelectorAll("#groups [data-id]")].find(e => focusedKey.startsWith(e.dataset.id) && e.dataset.act !== "check");
+    if (el) el.focus();
+  }
+}
+
+document.getElementById("groups").addEventListener("change", e => {
+  const el = e.target;
+  if (el.dataset.act === "check") { state.checked[el.dataset.id] = el.checked; render(); }
+});
+document.getElementById("groups").addEventListener("click", e => {
+  const btn = e.target.closest("button[data-act]");
+  if (!btn) return;
+  const id = btn.dataset.id;
+  if (btn.dataset.act === "apply") state.sugg[id] = "applied";
+  if (btn.dataset.act === "dismiss") state.sugg[id] = "dismissed";
+  if (btn.dataset.act === "undo") state.sugg[id] = "open";
+  render();
+});
+document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => {
+  state.lang = b.dataset.lang; render(); b.focus();
+}));
+document.querySelector(".back").addEventListener("click", e => e.preventDefault());
+
+document.getElementById("share").addEventListener("click", async () => {
+  const L = t();
+  const lines = [L.shareHeader];
+  RECIPES.forEach(r => {
+    lines.push("", r.name);
+    r.items.forEach(it => {
+      let line = `${state.checked[it.id] ? "[x]" : "[ ]"} “${it.words}”`;
+      if (it.sugg && state.sugg[it.id] === "applied") line += ` (${L.buy}: ${it.sugg[state.lang]})`;
+      lines.push(line);
+    });
+  });
+  const text = lines.join("\n");
+  try { await navigator.clipboard.writeText(text); } catch (_) { /* clipboard may be blocked; message still confirms intent */ }
+  document.getElementById("shared").hidden = false;
+});
+
+render();
+</script>
+</body>
+</html>
